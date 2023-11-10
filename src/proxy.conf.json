@@ -1,0 +1,6 @@
+{
+  "/send_e2e": {
+    "target": "https://msgapi.threema.ch",
+    "secure": false
+  }
+}
