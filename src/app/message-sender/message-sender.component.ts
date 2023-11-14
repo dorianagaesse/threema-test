@@ -20,12 +20,10 @@ export class MessageSenderComponent {
 
       const from = '*IPLIS00';
       // to = recipient. TODO: determine the recipient time to set the header (phone, id, email)
-      const to = 'MB4UKY9B';
-      const nonce = 'dbac573d37eb313dbafe55a5ba3f343087e16a8db5550ebb';
-      // box = message. TODO: encrypt the message
-      const box = '9bbe48e7ccfade4020f98ea8365e44380373e09097c1a9326527962fd14c9e3d2dd59b716643c162f59d03cdbe2727a0';
+      const to = this.recipient;
+      const message = this.message;
 
-      this.threemaService.sendThreemaMessage(from, to, nonce, box).subscribe(
+      this.threemaService.sendThreemaMessage(from, to, message).subscribe(
         (success) => {
           if (success) {
             alert('Message sent successfully.');
@@ -34,6 +32,7 @@ export class MessageSenderComponent {
           }
         }
       );
+
     } else {
       // Incorrect recipient
       alert('Incorrect recipient. Enter valid phone number, email or account ID (8 characters).')

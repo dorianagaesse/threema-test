@@ -13,28 +13,37 @@ export class ThreemaService {
 
   constructor(private http: HttpClient) { }
 
-  public sendThreemaMessage(from: string, to: string, nonce: string, box: string): Observable<boolean> {
+  public sendThreemaMessage(from: string, to: string, message: string): Observable<boolean> {
     const headers = new HttpHeaders({
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/json',
       'charset': 'utf-8',
-      'accept': '*/*',
-      'Access-Control-Allow-Origin': 'http://localhost:4200/',
-      'Access-Control-Allow-Methods': 'POST',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      'Access-Control-Allow-Credentials': 'true',
-      'Origin': 'http://localhost:4200'
+      'accept': '*/*'
     });
 
     const body = {
       from: from,
       to: to,
-      nonce: nonce,
-      box: box,
-      secret: this.api_secret
+      message: message
     };
 
-    return this.http.post(this.url, body, { headers, observe: 'response'}).pipe(
+    return this.http.post(this.url + '/send_message', body, { headers, observe: 'response'}).pipe(
       map((response: HttpResponse<any>) => response.status === 200),
+      catchError(() => of(false))
+    );
+  }
+
+  public testRequest(): Observable<boolean> {
+    // Adjust the URL to match your Flask /test endpoint
+    const testUrl = `${this.url}/test`;
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'text/plain',
+      'charset': 'utf-8',
+      'accept': '*/*'
+    });
+
+    return this.http.get(testUrl, { headers, observe: 'response' }).pipe(
+      map((response: HttpResponse<any>) => response.ok),
       catchError(() => of(false))
     );
   }
