@@ -1,7 +1,8 @@
 {
-  "/send_e2e": {
-    "target": "http://localhost:3000",
+  "/*": {
+    "target": "https://msgapi.threema.ch",
     "secure": false,
-    "changeOrigin": true
+    "changeOrigin": true,
+    "logLevel": "debug"
   }
 }

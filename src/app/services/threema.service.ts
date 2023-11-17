@@ -13,7 +13,9 @@ export class ThreemaService {
 
   constructor(private http: HttpClient) { }
 
-  public sendThreemaMessage(from: string, to: string, message: string): Observable<boolean> {
+  public sendThreemaMessage(from: string, to: string, message: string, nonce: string = 'd', box: string = 'd'): Observable<boolean> {
+    console.log('url: ', this.url+"/send_message");
+
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'charset': 'utf-8',
@@ -23,29 +25,18 @@ export class ThreemaService {
     const body = {
       from: from,
       to: to,
-      message: message
+      message: message,
+      nonce: nonce,
+      box: box,
+      secret: this.api_secret
     };
 
-    return this.http.post(this.url + '/send_message', body, { headers, observe: 'response'}).pipe(
-      map((response: HttpResponse<any>) => response.status === 200),
-      catchError(() => of(false))
-    );
-  }
+    // return this.http.post(this.url + '/send_e2e', body, { headers, observe: 'response'}).pipe(
+    //   map((response: HttpResponse<any>) => response.status === 200),
+    //   catchError(() => of(false))
+    // );
 
-  public testRequest(): Observable<boolean> {
-    // Adjust the URL to match your Flask /test endpoint
-    const testUrl = `${this.url}/test`;
-
-    const headers = new HttpHeaders({
-      'Content-Type': 'text/plain',
-      'charset': 'utf-8',
-      'accept': '*/*'
-    });
-
-    return this.http.get(testUrl, { headers, observe: 'response' }).pipe(
-      map((response: HttpResponse<any>) => response.ok),
-      catchError(() => of(false))
-    );
+    return this.http.post<any>(this.url + '/send_message', body, {headers: headers});
   }
 
   public getPublicKey(from: string, id: string) {
