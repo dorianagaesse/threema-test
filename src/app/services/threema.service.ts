@@ -13,7 +13,7 @@ export class ThreemaService {
 
   constructor(private http: HttpClient) { }
 
-  public sendThreemaMessage(from: string, to: string, message: string, nonce: string = 'd', box: string = 'd'): Observable<boolean> {
+  public sendThreemaMessage(from: string, to: string, message: string, recipientType: string, nonce: string = 'd', box: string = 'd'): Observable<boolean> {
     console.log('url: ', this.url+"/send_message");
 
     const headers = new HttpHeaders({
@@ -26,6 +26,7 @@ export class ThreemaService {
       from: from,
       to: to,
       message: message,
+      recipientType: recipientType,
       nonce: nonce,
       box: box,
       secret: this.api_secret
