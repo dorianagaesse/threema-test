@@ -4,13 +4,7 @@
   <form (ngSubmit)="sendMessage()">
     <div class="form-group">
       <label for="recipient">Recipient:</label>
-      <input
-        type="text"
-        id="recipient"
-        name="recipient"
-        [(ngModel)]="recipient"
-        placeholder="Phone number, email, or account ID"
-        required>
+      <app-recipient-input [(recipients)]="recipientList"></app-recipient-input>
     </div>
 
     <div class="form-group">

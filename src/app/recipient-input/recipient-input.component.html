@@ -1,0 +1,17 @@
+<div class="recipient-input-container">
+  <input
+    type="text"
+    id="recipient"
+    name="recipient"
+    [(ngModel)]="currentRecipient"
+    placeholder="Phone number, email, or account ID"
+    (keydown.enter)="addRecipient()"
+    (keydown.space)="addRecipient()"
+  >
+  <div class="recipient-box-container">
+    <div *ngFor="let recipient of recipients" class="recipient-box">
+      {{ recipient }}
+      <span class="remove-icon" (click)="removeRecipient(recipient)">X</span>
+    </div>
+  </div>
+</div>

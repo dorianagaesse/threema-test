@@ -6,11 +6,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MessageSenderComponent } from './message-sender/message-sender.component';
+import { RecipientInputComponent } from './recipient-input/recipient-input.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MessageSenderComponent
+    MessageSenderComponent,
+    RecipientInputComponent
   ],
   imports: [
     BrowserModule,
