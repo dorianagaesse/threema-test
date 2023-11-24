@@ -11,14 +11,18 @@ export class RecipientInputComponent {
 
   currentRecipient: string = '';
 
-  addRecipient() {
-    if (this.currentRecipient.trim() !== '') {
-      if (this.isValidRecipient(this.currentRecipient)) {
-        this.recipients.push(this.currentRecipient.trim());
-        this.recipientsChange.emit([...this.recipients]);
-        this.currentRecipient = '';
-      } else {
-        alert('Invalid recipient: please enter a phone number, an email address or an account ID (8 digits).');
+  addRecipient(event: KeyboardEvent) {
+    if (event.key === ' ' || event.key === 'Enter') {
+      event.preventDefault();
+      if (this.currentRecipient.trim() !== '') {
+        if (this.isValidRecipient(this.currentRecipient)) {
+          const normalizedRecipient = this.currentRecipient.startsWith('+') ? this.currentRecipient.substring(1) : this.currentRecipient;
+          this.recipients.push(normalizedRecipient);
+          this.recipientsChange.emit([...this.recipients]);
+          this.currentRecipient = '';
+        } else {
+          alert('Invalid recipient: please enter a phone number, an email address or an account ID (8 digits).');
+        }
       }
     }
   }
@@ -26,13 +30,13 @@ export class RecipientInputComponent {
   removeRecipient(recipient: string) {
     this.recipients = this.recipients.filter(r => r !== recipient);
     this.recipientsChange.emit([...this.recipients]);
+    this.currentRecipient = '';
   }
 
   private isValidRecipient(recipient: string): boolean {
     const phoneNumberPattern = /^(\+\d{11}|\d{11})$/;
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const accountIdPattern = /^[a-zA-Z0-9]{8}$/;
-
 
     return phoneNumberPattern.test(recipient) || emailPattern.test(recipient) || accountIdPattern.test(recipient);
   }

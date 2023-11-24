@@ -5,8 +5,7 @@
     name="recipient"
     [(ngModel)]="currentRecipient"
     placeholder="Phone number, email, or account ID"
-    (keydown.enter)="addRecipient()"
-    (keydown.space)="addRecipient()"
+    (keydown)="addRecipient($event)"
   >
   <div class="recipient-box-container">
     <div *ngFor="let recipient of recipients" class="recipient-box">

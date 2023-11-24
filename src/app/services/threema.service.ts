@@ -13,7 +13,7 @@ export class ThreemaService {
 
   constructor(private http: HttpClient) { }
 
-  public sendThreemaMessage(from: string, to: string, message: string, recipientType: string, nonce: string = 'd', box: string = 'd'): Observable<boolean> {
+  public sendThreemaMessage(from: string, to: string, message: string, recipientType: string, nonce: string = 'd', box: string = 'd'): Observable<string> {
     console.log('url: ', this.url+"/send_message");
 
     const headers = new HttpHeaders({
@@ -37,7 +37,21 @@ export class ThreemaService {
     //   catchError(() => of(false))
     // );
 
-    return this.http.post<any>(this.url + '/send_message', body, {headers: headers});
+    return this.http.post(this.url + '/send_message', body, {headers: headers, observe: 'response'})
+      .pipe(
+        map((response: HttpResponse<any>) => {
+          console.log('response: ', response);
+
+          if (response.status === 200) {
+            return 'Message sent successfully.';
+          } else if (response.status === 207) {
+            return 'Message partially sent. Failed recipients: ' + JSON.stringify(response.body.failed_recipients);
+          } else {
+            return 'Failed to send message. Error details: ' + response.body.error_details;
+          }
+        }),
+        catchError(() => of('Failed to send message. Please try again later.'))
+      );
   }
 
   public getPublicKey(from: string, id: string) {
