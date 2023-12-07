@@ -7,12 +7,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MessageSenderComponent } from './message-sender/message-sender.component';
 import { RecipientInputComponent } from './recipient-input/recipient-input.component';
+import { AlertComponent } from './alert/alert.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MessageSenderComponent,
-    RecipientInputComponent
+    RecipientInputComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,

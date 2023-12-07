@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class RecipientInputComponent {
   @Input() recipients: string[] = [];
   @Output() recipientsChange = new EventEmitter<string[]>();
+  @Output() invalidRecipient = new EventEmitter<void>();
 
   currentRecipient: string = '';
 
@@ -21,7 +22,7 @@ export class RecipientInputComponent {
           this.recipientsChange.emit([...this.recipients]);
           this.currentRecipient = '';
         } else {
-          alert('Invalid recipient: please enter a phone number, an email address or an account ID (8 digits).');
+          this.invalidRecipient.emit();
         }
       }
     }

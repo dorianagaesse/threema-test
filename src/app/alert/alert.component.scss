@@ -1,0 +1,40 @@
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid;
+  border-radius: 4px;
+  width: 500px;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 16px;
+  cursor: pointer;
+}
+
+.success {
+  background-color: #4CAF50;
+  color: white;
+  border-color: #45a049;
+}
+
+.error {
+  background-color: #f44336;
+  color: white;
+  border-color: #d32f2f;
+}
+
+.warning {
+  background-color: #ff9800;
+  color: white;
+  border-color: #f57c00;
+}
+
+.close {
+  float: right;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: #000;
+}

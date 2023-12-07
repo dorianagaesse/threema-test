@@ -4,7 +4,7 @@
   <form (ngSubmit)="sendMessage()">
     <div class="form-group">
       <label for="recipient">Recipient:</label>
-      <app-recipient-input [(recipients)]="recipientList"></app-recipient-input>
+      <app-recipient-input [(recipients)]="recipientList" (invalidRecipient)="handleInvalidRecipient()"></app-recipient-input>
     </div>
 
     <div class="form-group">
@@ -19,4 +19,6 @@
 
     <button type="submit">Send Message</button>
   </form>
+
+  <app-alert *ngIf="showAlert" [type]="alertType" [message]="alertMessage" (click)="closeAlert()"></app-alert>
 </div>

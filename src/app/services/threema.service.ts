@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpResponse, HttpParamsOptions } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment.development';
 
 @Injectable({
@@ -13,7 +13,7 @@ export class ThreemaService {
 
   constructor(private http: HttpClient) { }
 
-  public sendThreemaMessage(from: string, to: string, message: string, recipientType: string, nonce: string = 'd', box: string = 'd'): Observable<string> {
+  public sendThreemaMessage(from: string, to: string, message: string, recipientType: string): Observable<{status: string, message: string}> {
     console.log('url: ', this.url+"/send_message");
 
     const headers = new HttpHeaders({
@@ -27,30 +27,33 @@ export class ThreemaService {
       to: to,
       message: message,
       recipientType: recipientType,
-      nonce: nonce,
-      box: box,
       secret: this.api_secret
     };
 
-    // return this.http.post(this.url + '/send_e2e', body, { headers, observe: 'response'}).pipe(
-    //   map((response: HttpResponse<any>) => response.status === 200),
-    //   catchError(() => of(false))
-    // );
-
-    return this.http.post(this.url + '/send_message', body, {headers: headers, observe: 'response'})
+    return this.http.post(this.url + '/send_e2e_message', body, {headers: headers, observe: 'response'})
       .pipe(
         map((response: HttpResponse<any>) => {
-          console.log('response: ', response);
+          let status: string;
+          let displayMessage: string;
 
           if (response.status === 200) {
-            return 'Message sent successfully.';
+            status = 'success';
+            displayMessage = 'Message sent successfully.';
           } else if (response.status === 207) {
-            return 'Message partially sent. Failed recipients: ' + JSON.stringify(response.body.failed_recipients);
+            status = 'partial';
+            displayMessage = 'Message partially sent. Failed recipients: ' + JSON.stringify(response.body.status);
           } else {
-            return 'Failed to send message. Error details: ' + response.body.error_details;
+            status = 'error';
+            displayMessage = 'Failed to send message. Error details: ' + response.body.status_message;
           }
+
+          return { status, message: displayMessage };
         }),
-        catchError(() => of('Failed to send message. Please try again later.'))
+        catchError((error) => of({
+          status: 'error',
+          message: 'Error from the server. Error details:\n' + error.error.status
+        })
+        )
       );
   }
 
