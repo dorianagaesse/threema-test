@@ -57,6 +57,18 @@ export class ThreemaService {
       );
   }
 
+  public testSendRequest() {
+    return this.http.get(this.url)
+      .pipe(
+        map((response) => {
+          console.log(response);
+
+        }),
+        catchError((error) => of({error}))
+      );
+
+  }
+
   public getPublicKey(from: string, id: string) {
 
   }

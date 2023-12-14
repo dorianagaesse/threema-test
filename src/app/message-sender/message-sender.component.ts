@@ -70,4 +70,16 @@ export class MessageSenderComponent {
   closeAlert() {
     this.showAlert = false;
   }
+
+  testSendRequest() {
+    this.threemaService.testSendRequest().subscribe(
+      (response) => {
+        console.log('response: ', response);
+      },
+      (errorMessage) => {
+        console.log('errorMessage: ', errorMessage);
+
+      }
+      );
+  }
 }
